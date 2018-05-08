@@ -275,8 +275,8 @@ module ActiveBookings::Bookable
       # @param opts The booking options
       #
       # Example:
-      #   @room.be_booked!(@user, from: Date.today, to: Date.tomorrow, amount: 2)
-      def be_booked!(booker, opts={})
+      #   @room.book!(@user, from: Date.today, to: Date.tomorrow, amount: 2)
+      def book!(booker, opts={})
         booker.book!(self, opts)
       end
 
