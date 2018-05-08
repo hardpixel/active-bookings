@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activerecord', '~> 5.0'
-  spec.add_dependency 'ice_cube_chosko', '~> 0.1.1'
+  spec.add_dependency 'ice_cube', '~> 0.16'
 
   spec.add_development_dependency 'bundler', '~> 1.14'
   spec.add_development_dependency 'rake', '~> 10.0'
