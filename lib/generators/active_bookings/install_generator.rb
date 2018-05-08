@@ -17,6 +17,10 @@ module ActiveBookings
       template 'model/booking.rb', 'app/models/booking.rb'
     end
 
+    def create_locale_file
+      template 'locale/en.yml', 'config/locales/active_bookings.en.yml'
+    end
+
     def self.next_migration_number(dirname)
       ::ActiveRecord::Generators::Base.next_migration_number(dirname)
     end
