@@ -40,11 +40,11 @@ module ActiveBookings
           end
 
           def schedule_required?
-            self.rentable? && self.booking_opts && self.booking_opts && self.booking_opts[:time_type] != :none
+            self.booking_opts && self.booking_opts && self.booking_opts[:time_type] != :none
           end
 
           def capacity_required?
-            self.rentable? && self.booking_opts && self.booking_opts[:capacity_type] != :none
+            self.booking_opts && self.booking_opts[:capacity_type] != :none
           end
         end
       end
