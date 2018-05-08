@@ -11,7 +11,6 @@ module ActiveBookings
   autoload :Bookable
   autoload :Booker
   autoload :Booking
-  autoload :T
   autoload :VERSION
   autoload :TimeUtils
   autoload :DBUtils

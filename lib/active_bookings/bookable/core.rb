@@ -169,7 +169,8 @@ module ActiveBookings::Bookable
         if self.booking_opts[:capacity_type] != :none
           # Amount > capacity
           if opts[:amount] > self.capacity
-            raise ActiveBookings::AvailabilityError.new ActiveBookings::T.er('.availability.amount_gt_capacity', model: self.class.to_s)
+            error = I18n.t('.active_bookings.availability.amount_gt_capacity', model: self.class.to_s)
+            raise ActiveBookings::AvailabilityError.new error
           end
         end
 
@@ -197,12 +198,14 @@ module ActiveBookings::Bookable
           end
           # If something went wrong
           unless time_check_ok
-            raise ActiveBookings::AvailabilityError.new ActiveBookings::T.er('.availability.unavailable_interval', model: self.class.to_s, time_start: opts[:time_start], time_end: opts[:time_end])
+            error = I18n.t('.active_bookings.availability.unavailable_interval', model: self.class.to_s, time_start: opts[:time_start], time_end: opts[:time_end])
+            raise ActiveBookings::AvailabilityError.new error
           end
         end
         if self.booking_opts[:time_type] == :fixed
           if !(ActiveBookings::TimeUtils.time_in_schedule?(self.schedule, opts[:time]))
-            raise ActiveBookings::AvailabilityError.new ActiveBookings::T.er('.availability.unavailable_time', model: self.class.to_s, time: opts[:time])
+            error = I18n.t('.active_bookings.availability.unavailable_time', model: self.class.to_s, time: opts[:time])
+            raise ActiveBookings::AvailabilityError.new error
           end
         end
 
@@ -212,7 +215,8 @@ module ActiveBookings::Bookable
         overlapped = ActiveBookings::Booking.overlapped(self, opts)
         # If capacity_type is :closed cannot book if already booked (no matter if amount < capacity)
         if (self.booking_opts[:capacity_type] == :closed && !overlapped.empty?)
-          raise ActiveBookings::AvailabilityError.new ActiveBookings::T.er('.availability.already_booked', model: self.class.to_s)
+          error = I18n.t('.active_bookings.availability.already_booked', model: self.class.to_s)
+          raise ActiveBookings::AvailabilityError.new error
         end
         # if capacity_type is :open, check if amount <= maximum amount of overlapped booking
         if (self.booking_opts[:capacity_type] == :open && !overlapped.empty?)
@@ -228,13 +232,19 @@ module ActiveBookings::Bookable
               when :close
                 res = {amount: a[:amount] - b[:amount]}
               end
-              raise ActiveBookings::AvailabilityError.new ActiveBookings::T.er('.availability.already_booked', model: self.class.to_s) if (res[:amount] >= self.capacity)
+
+              if (res[:amount] >= self.capacity)
+                error = I18n.t('.active_bookings.availability.already_booked', model: self.class.to_s)
+                raise ActiveBookings::AvailabilityError.new error
+              end
+
               res
             end
           # else, just sum the amounts (fixed times are not intervals and they overlap if are the same)
           else
             if(overlapped.sum(:amount) + opts[:amount] > self.capacity)
-              raise ActiveBookings::AvailabilityError.new ActiveBookings::T.er('.availability.already_booked', model: self.class.to_s)
+              error = I18n.t('.active_bookings.availability.already_booked', model: self.class.to_s)
+              raise ActiveBookings::AvailabilityError.new error
             end
           end
         end
