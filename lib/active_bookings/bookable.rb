@@ -20,6 +20,8 @@ module ActiveBookings
 
     # Make a model bookable
     def bookable(options)
+      assoc_class_name = options.delete(:class_name) || '::ActiveBookings::Booking'
+
       if bookable?
         self.booking_opts = options
       else
@@ -28,8 +30,7 @@ module ActiveBookings
 
         class_eval do
           serialize :schedule, IceCube::Schedule
-
-          has_many :bookings, as: :bookable, dependent: :destroy, class_name: '::ActiveBookings::Booking'
+          has_many :bookings, as: :bookable, dependent: :destroy, class_name: assoc_class_name
 
           validates_presence_of :schedule, if: :schedule_required?
           validates_presence_of :capacity, if: :capacity_required?

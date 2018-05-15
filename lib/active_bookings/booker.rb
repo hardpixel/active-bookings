@@ -45,7 +45,8 @@ module ActiveBookings
 
         # create the new booking
         booking_params = opts.merge({booker: self, bookable: bookable})
-        booking = ActiveBookings::Booking.create!(booking_params)
+        booking_class = bookable.class.reflect_on_association(:bookings).klass
+        booking = booking_class.create!(booking_params)
 
         # reload the bookable to make changes available
         bookable.reload
