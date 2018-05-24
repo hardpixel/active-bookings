@@ -8,6 +8,7 @@ IceCube.compatibility = 12 # Drop compatibility for :start_date, avoiding a bunc
 module ActiveBookings
   extend ActiveSupport::Autoload
 
+  autoload :Serializer
   autoload :Bookable
   autoload :Booker
   autoload :Booking
