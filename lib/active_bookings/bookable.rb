@@ -32,9 +32,7 @@ module ActiveBookings
           serialize :schedule, ActiveBookings::Serializer
           has_many :bookings, as: :bookable, dependent: :destroy, class_name: assoc_class_name
 
-          validates_presence_of :schedule, if: :schedule_required?
-          validates_presence_of :capacity, if: :capacity_required?
-          validates_numericality_of :capacity, if: :capacity_required?, only_integer: true, greater_than_or_equal_to: 0
+          validates_numericality_of :capacity, if: :capacity?, only_integer: true, greater_than_or_equal_to: 0
 
           def self.bookable?
             true
