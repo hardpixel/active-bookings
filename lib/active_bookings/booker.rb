@@ -14,8 +14,10 @@ module ActiveBookings
       #     is_booker
       #   end
       def is_booker(opts={})
+        assoc_class_name = opts.delete(:class_name) || '::ActiveBookings::Booking'
+
         class_eval do
-          has_many :bookings, as: :booker, dependent: :destroy, class_name: '::ActiveBookings::Booking'
+          has_many :bookings, as: :booker, dependent: :destroy, class_name: assoc_class_name
         end
 
         include ActiveBookings::Booker::InstanceMethods
